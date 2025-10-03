@@ -1,0 +1,16 @@
+$ErrorActionPreference = 'Stop'
+
+# Run script within the directory
+Push-Location -Path $PSScriptRoot
+
+# Execute package scripts
+Get-ChildItem -Path $PWD -Directory | ForEach-Object {
+    if ($PSItem.Name -ne '__pycache__') {
+        Write-Host -Object "Packaging $($PSItem.Name)"
+        & (Join-Path -Path $PSItem.FullName -ChildPath 'package.ps1')
+    }
+}
+
+Write-Host
+
+Pop-Location
