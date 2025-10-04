@@ -14,6 +14,13 @@
 mastercomfig-vars
 /config/mastercomfig/cfg/comfig/addons.cfg
 
+# dev-win script generated packages
+/dev-win/addons/mastercomfig*
+/dev-win/presets/mastercomfig*
+/dev-win/mastercomfig*
+/dev-win/**/*.cfg
+/dev-win/template.md
+
 # node
 /node_modules/
 
