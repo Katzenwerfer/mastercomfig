@@ -1,6 +1,6 @@
 function cleanItems {
     if ($env:zip_package -ne $true) {
-        # remove comments, including indented comments
+        # Remove all comments
         Get-ChildItem -Path $PWD -Include '*.cfg', '*.txt', '*.res', '*.nut' -Recurse | ForEach-Object {
             (Get-Content -Path $PSItem) | Where-Object {
                 $PSItem -notmatch '^[\t ]*//'
@@ -8,27 +8,32 @@ function cleanItems {
                 $PSItem -replace '//.*', ''
             } | Set-Content -Path $PSItem
         }
-        # remove leading and trailing whitespace
+
+        # Trim leading and trailing whitespace
         Get-ChildItem -Path $PWD -Include '*.cfg', '*.txt', '*.res', '*.nut' -Recurse | ForEach-Object {
             (Get-Content -Path $PSItem) | ForEach-Object {
                 $PSItem -replace '^[\t ]*|[\t ]*$', ''
             } | Set-Content -Path $PSItem
         }
-        # remove blank lines
+
+        # Remove trailing newlines
         Get-ChildItem -Path $PWD -Include '*.cfg', '*.txt', '*.res', '*.nut' -Recurse | ForEach-Object {
             (Get-Content -Path $PSItem) | Where-Object {
                 $PSItem -notmatch '^\s*$'
             } | Set-Content -Path $PSItem
         }
-        # remove quotes from VDF key values TODO: don't remove empty quotes or spaced strings
+
+        # Clean up VDF files
         Get-ChildItem -Path $PWD -Include 'mtp.cfg', 'dxsupport*.cfg', '*.txt', '*.res' -Exclude 'texture_preload_list.txt' -Recurse | ForEach-Object {
             & '..\shrink_key_values.ps1' $PSItem
         }
+
         # Remove newlines from VDF key values
         Get-ChildItem -Path $PWD -Include 'mtp.cfg', 'dxsupport*.cfg', '*.txt', '*.res', '*.nut' -Exclude 'texture_preload_list.txt' -Recurse | ForEach-Object {
             (Get-Content -Path $PSItem) -join ' ' | Set-Content -Path $PSItem -NoNewline
         }
-        # remove extraneous whitespace from VDF key values
+
+        # Normalize spacing between symbols in VDFs
         Get-ChildItem -Path $PWD -Include 'mtp.cfg', 'dxsupport*.cfg', '*.txt', '*.res' -Exclude 'texture_preload_list.txt' -Recurse | ForEach-Object {
             (Get-Content -Path $PSItem) -replace '[\t ]+', ' ' | Set-Content -Path $PSItem -NoNewline
         }
