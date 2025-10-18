@@ -3,12 +3,16 @@
 
 param($inputFile)
 
+# Remove quotes from VDF key values except empty quotes or spaced strings
 (Get-Content -Path $inputFile) | ForEach-Object {
     $PSItem -replace '"([\w-./]+?)"', '$1'
 } | Set-Content -Path $inputFile
 
+# Normalize spacing between symbols in VDFs
 (Get-Content -Path $inputFile) -join ' ' | Set-Content -Path $inputFile -NoNewline
 
+# Remove all newlines in VDFs
 (Get-Content -Path $inputFile) -replace '[\t ]+', ' ' | Set-Content -Path $inputFile -NoNewline
 
+# Normalize spacing around double quotes and brackets in VDFs
 (Get-Content -Path $inputFile) -replace ' ?(["{}]) ?', '$1' | Set-Content -Path $inputFile -NoNewline

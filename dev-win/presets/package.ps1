@@ -1,12 +1,15 @@
 # Run script within the directory
 Push-Location -Path $PSScriptRoot
 
-# Delete old VPKs and folders
+# Delete old files and folders
 Remove-Item -Path '.\*.vpk' -Force
 Get-ChildItem -Path $PWD -Directory | Remove-Item -Recurse -Force
 
+# Copy over preset files
 New-Item -Path '.\mastercomfig-base\cfg\presets' -ItemType 'Directory' -Force | Out-Null
 Copy-Item -Path '..\..\config\cfg\presets\*.cfg' -Destination '.\mastercomfig-base\cfg\presets' -Force
+
+# Generate autoexec.cfg
 $autoexec_file = '.\mastercomfig-base\cfg\autoexec.cfg'
 @(
     'exec comfig/define_presets.cfg;'
@@ -25,12 +28,13 @@ $autoexec_file = '.\mastercomfig-base\cfg\autoexec.cfg'
 # Fill folders with common files
 Copy-Item -Path '..\..\config\mastercomfig\*' -Destination '.\mastercomfig-base' -Force -Recurse
 
+# Import common functions and cleanup various files in the directory
 . '..\common.ps1'
-
 cleanItems
-
 packageItems
 
+# Write a newline to the console
 Write-Host
 
+# Exit the script directory
 Pop-Location

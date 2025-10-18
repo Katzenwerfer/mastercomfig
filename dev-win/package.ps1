@@ -11,6 +11,8 @@ Get-ChildItem -Path $PWD -Directory | ForEach-Object {
     }
 }
 
+# Write a newline to the console
 Write-Host
 
+# Exit the script directory
 Pop-Location

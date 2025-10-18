@@ -1,7 +1,7 @@
 # Run script within the directory
 Push-Location -Path $PSScriptRoot
 
-# Delete old VPKs and folders
+# Delete old files and folders
 Remove-Item -Path '.\*.vpk' -Force
 Get-ChildItem -Path $PWD -Directory | Remove-Item -Recurse -Force
 
@@ -16,10 +16,12 @@ Get-ChildItem -Path '..\..\config\cfg\addons\*' -File | ForEach-Object {
 # Copy over custom addons
 Copy-Item -Path '..\..\config\addons\*' -Destination $PWD -Force -Recurse
 
+# Import common functions and cleanup various files in the directory
 . '..\common.ps1'
-
 cleanAndPackage
 
+# Write a newline to the console
 Write-Host
 
+# Exit the script directory
 Pop-Location
