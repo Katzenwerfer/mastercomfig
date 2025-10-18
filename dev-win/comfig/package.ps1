@@ -2,7 +2,7 @@
 Push-Location -Path $PSScriptRoot
 
 # Delete old files
-Remove-Item -Path '.\*.cfg' -Recurse -Force
+Get-ChildItem -Path $PWD -Exclude 'package.ps1' | Remove-Item -Force
 
 # Copy comfig.cfg as autoexec_template.cfg
 Copy-Item -Path '..\..\config\mastercomfig\cfg\comfig\comfig.cfg' -Destination '.\autoexec_template.cfg' -Force
