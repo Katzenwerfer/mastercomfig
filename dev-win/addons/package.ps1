@@ -2,8 +2,7 @@
 Push-Location -Path $PSScriptRoot
 
 # Delete old files and folders
-Remove-Item -Path '.\*.vpk' -Force
-Get-ChildItem -Path $PWD -Directory | Remove-Item -Recurse -Force
+Get-ChildItem -Path $PWD -Exclude 'package.ps1' | Remove-Item -Recurse -Force
 
 # Process config addons
 Get-ChildItem -Path '..\..\config\cfg\addons\*' -File | ForEach-Object {

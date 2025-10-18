@@ -2,8 +2,7 @@
 Push-Location -Path $PSScriptRoot
 
 # Delete old files and folders
-Remove-Item -Path '.\*.vpk' -Force
-Get-ChildItem -Path $PWD -Directory | Remove-Item -Recurse -Force
+Get-ChildItem -Path $PWD -Exclude 'package.ps1', 'mastercomfig-base_backup' | Remove-Item -Recurse -Force
 
 # Copy over preset files
 New-Item -Path '.\mastercomfig-base\cfg\presets' -ItemType 'Directory' -Force | Out-Null
