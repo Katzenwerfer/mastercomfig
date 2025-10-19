@@ -44,6 +44,16 @@ function cleanItems {
         Get-ChildItem -Path $PWD -Include 'mtp.cfg', 'dxsupport*.cfg', '*.txt', '*.res' -Exclude 'texture_preload_list.txt' -Recurse | ForEach-Object {
             (Get-Content -Path $PSItem) -replace ' ?([";{}]) ?', '$1' | Set-Content -Path $PSItem
         }
+
+        # Convert CRLF to LF line breaks in all files
+        Get-ChildItem -Path $PWD -Include '*.cfg', '*.txt', '*.res', '*.nut' -Recurse | ForEach-Object {
+            (Get-Content -Path $PSItem -Raw) -replace '\r', '' | Set-Content -Path $PSItem -NoNewline
+        }
+
+        # Remove trailing multiple final newlines in all files
+        Get-ChildItem -Path $PWD -Include '*.cfg', '*.txt', '*.res', '*.nut' -Recurse | ForEach-Object {
+            (Get-Content -Path $PSItem -Raw) -replace '\n\n+$', "`n" | Set-Content -Path $PSItem -NoNewline
+        }
     }
 }
 
