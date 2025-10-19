@@ -6,7 +6,7 @@ Get-ChildItem -Path $PWD -Exclude 'package.ps1', 'mastercomfig-base_backup' | Re
 
 # Copy over preset files
 New-Item -Path '.\mastercomfig-base\cfg\presets' -ItemType 'Directory' -Force | Out-Null
-Copy-Item -Path '..\..\config\cfg\presets\*.cfg' -Destination '.\mastercomfig-base\cfg\presets' -Force
+Get-ChildItem -Path '..\..\config\cfg\presets' | Copy-Item -Destination '.\mastercomfig-base\cfg\presets' -Force
 
 # Generate autoexec.cfg
 @(
@@ -24,7 +24,7 @@ Copy-Item -Path '..\..\config\cfg\presets\*.cfg' -Destination '.\mastercomfig-ba
 ) | Set-Content -Path '.\mastercomfig-base\cfg\autoexec.cfg' -NoNewline
 
 # Fill folders with common files
-Copy-Item -Path '..\..\config\mastercomfig\*' -Destination '.\mastercomfig-base' -Force -Recurse
+Get-ChildItem -Path '..\..\config\mastercomfig' | Copy-Item -Destination '.\mastercomfig-base' -Force -Recurse
 
 # Import common functions and cleanup various files in the directory
 . '..\common.ps1'

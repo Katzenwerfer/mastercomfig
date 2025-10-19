@@ -13,7 +13,7 @@ Get-ChildItem -Path '..\..\config\cfg\addons' -File | ForEach-Object {
 }
 
 # Copy over custom addons
-Copy-Item -Path '..\..\config\addons\*' -Destination $PWD -Force -Recurse
+Get-ChildItem -Path '..\..\config\addons' -Directory | Copy-Item -Destination $PWD -Force -Recurse
 
 # Import common functions and cleanup various files in the directory
 . '..\common.ps1'
