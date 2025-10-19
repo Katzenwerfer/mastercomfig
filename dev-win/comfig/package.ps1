@@ -9,26 +9,26 @@ Copy-Item -Path '..\..\config\mastercomfig\cfg\comfig\comfig.cfg' -Destination '
 
 # Remove all lines starting with 'echo'
 (Get-Content -Path '.\autoexec_template.cfg') | Where-Object {
-    $PSItem -notmatch '^echo'
+    -not $PSItem.StartsWith('echo')
 } | Set-Content '.\autoexec_template.cfg'
 
 # Remove all lines starting with 'alias'
 (Get-Content -Path '.\autoexec_template.cfg') | Where-Object {
-    $PSItem -notmatch '^alias'
+    -not $PSItem.StartsWith('alias')
 } | Set-Content '.\autoexec_template.cfg'
 
 # Remove all lines starting with 'block_game_overrides_once'
 (Get-Content -Path '.\autoexec_template.cfg') | Where-Object {
-    $PSItem -notmatch '^block_game_overrides_once'
+    -not $PSItem.StartsWith('block_game_overrides_once')
 } | Set-Content -Path '.\autoexec_template.cfg'
 
 # Comment all uncommented cvars
 (Get-Content -Path '.\autoexec_template.cfg') | ForEach-Object {
-    $PSItem -replace '^([^\t +/].*)', '//$1'
+    $PSItem -replace '^(\w+.+)', '//$1'
 } | Set-Content -Path '.\autoexec_template.cfg'
 
 # Remove trailing multiple newlines and output with LF line breaks
-(Get-Content -Path '.\autoexec_template.cfg') -join "`n" -replace '\n\n+', "`n`n" | Set-Content -Path '.\autoexec_template.cfg' -NoNewline
+(Get-Content -Path '.\autoexec_template.cfg') -join "`n" -replace '\n\n+', "`n`n" -replace '\n\n$', "`n" | Set-Content -Path '.\autoexec_template.cfg' -NoNewline
 
 # Copy config_template.cfg as autoexec.cfg
 Copy-Item -Path '..\..\config\templates\config\config_template.cfg' -Destination '.\autoexec.cfg' -Force
