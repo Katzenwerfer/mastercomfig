@@ -7,7 +7,7 @@ Push-Location -Path $PSScriptRoot
 Get-ChildItem -Path $PWD -Directory | ForEach-Object {
     if ($PSItem.Name -ne '__pycache__') {
         Write-Host -Object "Packaging $($PSItem.Name)"
-        & (Join-Path -Path $PSItem.FullName -ChildPath 'package.ps1')
+        & (Join-Path -Path $PSItem -ChildPath 'package.ps1')
     }
 }
 

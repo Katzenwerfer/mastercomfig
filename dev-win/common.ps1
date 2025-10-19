@@ -3,7 +3,7 @@ function cleanItems {
         # Remove all comments
         Get-ChildItem -Path $PWD -Include '*.cfg', '*.txt', '*.res', '*.nut' -Recurse | ForEach-Object {
             (Get-Content -Path $PSItem) | Where-Object {
-                $PSItem -notmatch '^[\t ]*//'
+                -not $PSItem.TrimStart().StartsWith('//')
             } | ForEach-Object {
                 $PSItem -replace '//.*', ''
             } | Set-Content -Path $PSItem
@@ -12,14 +12,14 @@ function cleanItems {
         # Trim leading and trailing whitespace
         Get-ChildItem -Path $PWD -Include '*.cfg', '*.txt', '*.res', '*.nut' -Recurse | ForEach-Object {
             (Get-Content -Path $PSItem) | ForEach-Object {
-                $PSItem -replace '^[\t ]*|[\t ]*$', ''
+                $PSItem.Trim()
             } | Set-Content -Path $PSItem
         }
 
         # Remove trailing newlines
         Get-ChildItem -Path $PWD -Include '*.cfg', '*.txt', '*.res', '*.nut' -Recurse | ForEach-Object {
             (Get-Content -Path $PSItem) | Where-Object {
-                $PSItem -notmatch '^\s*$'
+                $PSItem -match '\S'
             } | Set-Content -Path $PSItem
         }
 

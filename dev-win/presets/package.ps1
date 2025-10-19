@@ -9,7 +9,6 @@ New-Item -Path '.\mastercomfig-base\cfg\presets' -ItemType 'Directory' -Force | 
 Copy-Item -Path '..\..\config\cfg\presets\*.cfg' -Destination '.\mastercomfig-base\cfg\presets' -Force
 
 # Generate autoexec.cfg
-$autoexec_file = '.\mastercomfig-base\cfg\autoexec.cfg'
 @(
     'exec comfig/define_presets.cfg;'
     'exec app/pre_init.cfg;exec overrides/pre_init.cfg;'
@@ -22,15 +21,14 @@ $autoexec_file = '.\mastercomfig-base\cfg\autoexec.cfg'
     'exec app/addons.cfg;'
     'exec overrides/autoexec.cfg;exec app/autoexec.cfg;'
     'exec comfig/finalize.cfg'
-) | Set-Content -Path $autoexec_file -NoNewline
+) | Set-Content -Path '.\mastercomfig-base\cfg\autoexec.cfg' -NoNewline
 
 # Fill folders with common files
 Copy-Item -Path '..\..\config\mastercomfig\*' -Destination '.\mastercomfig-base' -Force -Recurse
 
 # Import common functions and cleanup various files in the directory
 . '..\common.ps1'
-cleanItems
-packageItems
+cleanAndPackage
 
 # Write a newline to the console
 Write-Host

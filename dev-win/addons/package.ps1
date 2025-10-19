@@ -5,10 +5,10 @@ Push-Location -Path $PSScriptRoot
 Get-ChildItem -Path $PWD -Exclude 'package.ps1' | Remove-Item -Recurse -Force
 
 # Process config addons
-Get-ChildItem -Path '..\..\config\cfg\addons\*' -File | ForEach-Object {
-    if ($PSItem.Extension.TrimStart('.') -eq 'cfg') {
-        New-Item -Path ".\mastercomfig-addon-$($PSItem.BaseName)\cfg\addons" -ItemType 'Directory' -Force | Out-Null
-        Copy-Item -Path $PSItem.FullName -Destination ".\mastercomfig-addon-$($PSItem.BaseName)\cfg\addons\$($PSItem.Name)" -Force
+Get-ChildItem -Path '..\..\config\cfg\addons' -File | ForEach-Object {
+    if ($PSItem.Extension -eq '.cfg') {
+        New-Item -Path ".\mastercomfig-addon-$($PSItem.BaseName)\cfg" -Name 'addons' -ItemType 'Directory' -Force | Out-Null
+        Copy-Item -Path $PSItem -Destination ".\mastercomfig-addon-$($PSItem.BaseName)\cfg\addons" -Force
     }
 }
 
