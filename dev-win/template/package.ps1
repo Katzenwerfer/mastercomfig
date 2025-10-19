@@ -2,7 +2,7 @@
 Push-Location -Path $PSScriptRoot
 
 # Delete old files and folders
-Remove-Item -Path '.\overrides' -Recurse -Force -ErrorAction 'SilentlyContinue'
+Get-ChildItem -Path $PWD -Exclude 'package.ps1' | Remove-Item -Recurse -Force
 
 # Copy template files
 Copy-Item -Path '..\..\config\templates\overrides' -Destination $PWD -Recurse
