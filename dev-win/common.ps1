@@ -23,19 +23,26 @@ function cleanItems {
             } | Set-Content -Path $PSItem
         }
 
-        # Clean up VDF files
-        Get-ChildItem -Path $PWD -Include 'mtp.cfg', 'dxsupport*.cfg', '*.txt', '*.res' -Exclude 'texture_preload_list.txt' -Recurse | ForEach-Object {
-            & '..\shrink_key_values.ps1' $PSItem
+        # Remove all newlines in VDFs
+        Get-ChildItem -Path $PWD -Include 'mtp.cfg', 'dxsupport*.cfg', '*.txt', '*.res', '*.nut' -Exclude 'texture_preload_list.txt' -Recurse | ForEach-Object {
+            (Get-Content -Path $PSItem) -join ' ' | Set-Content -Path $PSItem
         }
 
-        # Remove newlines from VDF key values
-        Get-ChildItem -Path $PWD -Include 'mtp.cfg', 'dxsupport*.cfg', '*.txt', '*.res', '*.nut' -Exclude 'texture_preload_list.txt' -Recurse | ForEach-Object {
-            (Get-Content -Path $PSItem) -join ' ' | Set-Content -Path $PSItem -NoNewline
+        # Remove quotes from VDF key values except empty quotes or spaced strings
+        Get-ChildItem -Path $PWD -Include 'mtp.cfg', 'dxsupport*.cfg', '*.txt', '*.res' -Exclude 'texture_preload_list.txt' -Recurse | ForEach-Object {
+            (Get-Content -Path $PSItem) | ForEach-Object {
+                $PSItem -replace '"([\w-./]+?)"', '$1'
+            } | Set-Content -Path $PSItem
         }
 
         # Normalize spacing between symbols in VDFs
         Get-ChildItem -Path $PWD -Include 'mtp.cfg', 'dxsupport*.cfg', '*.txt', '*.res' -Exclude 'texture_preload_list.txt' -Recurse | ForEach-Object {
-            (Get-Content -Path $PSItem) -replace '[\t ]+', ' ' | Set-Content -Path $PSItem -NoNewline
+            (Get-Content -Path $PSItem) -replace '[\t ]+', ' ' | Set-Content -Path $PSItem
+        }
+
+        # Normalize spacing around double quotes, semicolons, and brackets in VDFs
+        Get-ChildItem -Path $PWD -Include 'mtp.cfg', 'dxsupport*.cfg', '*.txt', '*.res' -Exclude 'texture_preload_list.txt' -Recurse | ForEach-Object {
+            (Get-Content -Path $PSItem) -replace ' ?([";{}]) ?', '$1' | Set-Content -Path $PSItem
         }
     }
 }
