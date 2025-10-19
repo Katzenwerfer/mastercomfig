@@ -19,7 +19,7 @@ Get-ChildItem -Path '..\..\config\cfg\presets' | Copy-Item -Destination '.\maste
     'run_modules;'
     'exec comfig/echo.cfg;'
     'exec app/addons.cfg;'
-    'exec overrides/autoexec.cfg;exec app/autoexec.cfg;'
+    'exec app/autoexec.cfg;exec overrides/autoexec.cfg;'
     'exec comfig/finalize.cfg'
 ) | Set-Content -Path '.\mastercomfig-base\cfg\autoexec.cfg' -NoNewline
 
